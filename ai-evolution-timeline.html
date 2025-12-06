@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Evolution Timeline: Five Dials 1950-2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;600;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --text: #2a2a2a;
+            --text-light: #6a6a6a;
+            --accent-1: #0077be;
+            --accent-2: #d64545;
+            --accent-3: #f5a623;
+            --accent-4: #7c4dff;
+            --accent-5: #00a878;
+            --border: #e0ddd8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Code Pro', monospace;
+            background: var(--bg);
+            color: var(--text);
+            padding: 60px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Spectral', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+            transform: translateX(-50%);
+        }
+
+        .era {
+            position: relative;
+            margin-bottom: 100px;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .era:nth-child(1) { animation-delay: 0.2s; }
+        .era:nth-child(2) { animation-delay: 0.4s; }
+        .era:nth-child(3) { animation-delay: 0.6s; }
+        .era:nth-child(4) { animation-delay: 0.8s; }
+        .era:nth-child(5) { animation-delay: 1s; }
+
+        .era-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--text);
+            border-radius: 50%;
+            border: 4px solid var(--bg);
+            z-index: 2;
+        }
+
+        .era-content {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            width: calc(50% - 50px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .era:nth-child(odd) .era-content {
+            margin-left: auto;
+        }
+
+        .era:nth-child(even) .era-content {
+            margin-right: auto;
+        }
+
+        .era-content:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .era-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .era-years {
+            font-family: 'Spectral', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .era-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .era-description {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .dials-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .dial-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 30px;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .dial-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .dial-bar-container {
+            background: #f5f3f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dial-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+
+        .dial-bar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+        }
+
+        .perception-bar { background: var(--accent-1); }
+        .memory-bar { background: var(--accent-2); }
+        .goals-bar { background: var(--accent-3); }
+        .planning-bar { background: var(--accent-4); }
+        .action-bar { background: var(--accent-5); }
+
+        .dial-value {
+            font-weight: 600;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .key-innovations {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .key-innovations-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .innovations-list {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 80px;
+            padding: 30px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .legend-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .era-marker {
+                left: 20px;
+            }
+
+            .era-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+
+            .dial-row {
+                grid-template-columns: 120px 1fr 25px;
+                gap: 10px;
+            }
+
+            .era-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .dial-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .dial-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Seven Decades of AI Evolution</h1>
+            <p class="subtitle">How the five cognitive dials have been turned up and down from the 1950s to today</p>
+        </header>
+
+        <div class="timeline">
+            <div class="era">
+                <div class="era-marker"></div>
+                <div class="era-content">
+                    <div class="era-header">
+                        <div class="era-years">1950s–1980s</div>
+                        <div class="era-label">Symbolic Era</div>
+                    </div>
+                    <div class="era-description">
+                        Early AI excelled at logic puzzles and theorem proving. High planning, almost no perception. 
+                        Systems lived on whiteboards and couldn't see or hear the messy real world.
+                    </div>
+                    <div class="dials-grid">
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar perception-bar" data-width="15"></div>
+                            </div>
+                            <div class="dial-value">1.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-2)">Memory</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar memory-bar" data-width="10"></div>
+                            </div>
+                            <div class="dial-value">1</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar goals-bar" data-width="30"></div>
+                            </div>
+                            <div class="dial-value">3</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-4)">Planning</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar planning-bar" data-width="75"></div>
+                            </div>
+                            <div class="dial-value">7.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-5)">Action</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar action-bar" data-width="10"></div>
+                            </div>
+                            <div class="dial-value">1</div>
+                        </div>
+                    </div>
+                    <div class="key-innovations">
+                        <div class="key-innovations-title">Key Developments</div>
+                        <div class="innovations-list">
+                            Expert systems, theorem provers, symbolic reasoning, toy domains like blocks world
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era">
+                <div class="era-marker"></div>
+                <div class="era-content">
+                    <div class="era-header">
+                        <div class="era-years">1980s–1990s</div>
+                        <div class="era-label">Statistical Turn</div>
+                    </div>
+                    <div class="era-description">
+                        The center of gravity shifted to perception. Probabilistic models allowed systems to handle 
+                        noise and uncertainty. Speech recognition, handwriting, basic language patterns.
+                    </div>
+                    <div class="dials-grid">
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar perception-bar" data-width="40"></div>
+                            </div>
+                            <div class="dial-value">4</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-2)">Memory</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar memory-bar" data-width="20"></div>
+                            </div>
+                            <div class="dial-value">2</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar goals-bar" data-width="25"></div>
+                            </div>
+                            <div class="dial-value">2.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-4)">Planning</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar planning-bar" data-width="35"></div>
+                            </div>
+                            <div class="dial-value">3.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-5)">Action</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar action-bar" data-width="15"></div>
+                            </div>
+                            <div class="dial-value">1.5</div>
+                        </div>
+                    </div>
+                    <div class="key-innovations">
+                        <div class="key-innovations-title">Key Developments</div>
+                        <div class="innovations-list">
+                            Neural networks, hidden Markov models, speech recognition, OCR, statistical NLP
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era">
+                <div class="era-marker"></div>
+                <div class="era-content">
+                    <div class="era-header">
+                        <div class="era-years">2005–2015</div>
+                        <div class="era-label">Deep Learning</div>
+                    </div>
+                    <div class="era-description">
+                        Deep learning turned perception way up. Convolutional and recurrent networks delivered 
+                        step-change improvements in image recognition, speech, and translation.
+                    </div>
+                    <div class="dials-grid">
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar perception-bar" data-width="75"></div>
+                            </div>
+                            <div class="dial-value">7.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-2)">Memory</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar memory-bar" data-width="35"></div>
+                            </div>
+                            <div class="dial-value">3.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar goals-bar" data-width="30"></div>
+                            </div>
+                            <div class="dial-value">3</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-4)">Planning</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar planning-bar" data-width="40"></div>
+                            </div>
+                            <div class="dial-value">4</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-5)">Action</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar action-bar" data-width="35"></div>
+                            </div>
+                            <div class="dial-value">3.5</div>
+                        </div>
+                    </div>
+                    <div class="key-innovations">
+                        <div class="key-innovations-title">Key Developments</div>
+                        <div class="innovations-list">
+                            ImageNet, AlexNet, speech-to-text at scale, recommendation systems begin deployment
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era">
+                <div class="era-marker"></div>
+                <div class="era-content">
+                    <div class="era-header">
+                        <div class="era-years">2015–2020</div>
+                        <div class="era-label">Transformers & RL</div>
+                    </div>
+                    <div class="era-description">
+                        The turning point. Transformers extended context dramatically. Deep RL coupled perception 
+                        and planning in games. Three dials now noticeably higher.
+                    </div>
+                    <div class="dials-grid">
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar perception-bar" data-width="85"></div>
+                            </div>
+                            <div class="dial-value">8.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-2)">Memory</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar memory-bar" data-width="60"></div>
+                            </div>
+                            <div class="dial-value">6</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar goals-bar" data-width="35"></div>
+                            </div>
+                            <div class="dial-value">3.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-4)">Planning</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar planning-bar" data-width="55"></div>
+                            </div>
+                            <div class="dial-value">5.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-5)">Action</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar action-bar" data-width="45"></div>
+                            </div>
+                            <div class="dial-value">4.5</div>
+                        </div>
+                    </div>
+                    <div class="key-innovations">
+                        <div class="key-innovations-title">Key Developments</div>
+                        <div class="innovations-list">
+                            Attention mechanism, GPT, BERT, AlphaGo, AlphaZero, DALL-E, agents in synthetic domains
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="era">
+                <div class="era-marker"></div>
+                <div class="era-content">
+                    <div class="era-header">
+                        <div class="era-years">2020–2025</div>
+                        <div class="era-label">Partial Minds</div>
+                    </div>
+                    <div class="era-description">
+                        The decade when capabilities crossed a psychological threshold. Strong perception, extended 
+                        context, emerging planning. Thin goals, creeping action. The mismatch makes this moment unstable.
+                    </div>
+                    <div class="dials-grid">
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar perception-bar" data-width="90"></div>
+                            </div>
+                            <div class="dial-value">9</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-2)">Memory</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar memory-bar" data-width="70"></div>
+                            </div>
+                            <div class="dial-value">7</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar goals-bar" data-width="35"></div>
+                            </div>
+                            <div class="dial-value">3.5</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-4)">Planning</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar planning-bar" data-width="60"></div>
+                            </div>
+                            <div class="dial-value">6</div>
+                        </div>
+                        <div class="dial-row">
+                            <div class="dial-name" style="color: var(--accent-5)">Action</div>
+                            <div class="dial-bar-container">
+                                <div class="dial-bar action-bar" data-width="50"></div>
+                            </div>
+                            <div class="dial-value">5</div>
+                        </div>
+                    </div>
+                    <div class="key-innovations">
+                        <div class="key-innovations-title">Key Developments</div>
+                        <div class="innovations-list">
+                            GPT-4, Claude, multimodal models, code assistants, early agents, tool use, increasing deployment
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--accent-1)"></div>
+                <div class="legend-label">Perception</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--accent-2)"></div>
+                <div class="legend-label">Memory & Context</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--accent-3)"></div>
+                <div class="legend-label">Goals & Values</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--accent-4)"></div>
+                <div class="legend-label">Planning & Foresight</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: var(--accent-5)"></div>
+                <div class="legend-label">Action & Impact</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate bars on load
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.dial-bar');
+            
+            bars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const width = bar.dataset.width;
+                    bar.style.width = width + '%';
+                }, index * 50);
+            });
+        });
+
+        // Animate bars on scroll for mobile
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = entry.target.querySelectorAll('.dial-bar');
+                    bars.forEach((bar, index) => {
+                        setTimeout(() => {
+                            const width = bar.dataset.width;
+                            bar.style.width = width + '%';
+                        }, index * 50);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.era').forEach(era => {
+            observer.observe(era);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Dials Visualizations Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #1a1a1a;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-preview {
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-preview::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(2px);
+        }
+
+        .card-content {
+            padding: 30px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #6a6a6a;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-link {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .usage-tips {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .usage-tips h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tip {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid white;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tip-content {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎛️ Five Dials Visualizations</h1>
+            <p class="intro">
+                A complete suite of interactive visualizations for understanding AI systems 
+                through five cognitive capabilities. Click any visualization below to explore.
+            </p>
+        </header>
+
+        <div class="gallery">
+            <div class="card">
+                <div class="card-preview">🎛️</div>
+                <div class="card-content">
+                    <div class="card-title">Interactive Dashboard</div>
+                    <div class="card-description">
+                        Adjust five cognitive dials in real-time. Explore presets for different AI systems 
+                        and see instant analysis of each configuration.
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span>⚡</span>
+                            <span>Interactive</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📱</span>
+                            <span>Responsive</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🎯</span>
+                            <span>Main Essay</span>
+                        </div>
+                    </div>
+                    <a href="five-dials-dashboard.html" class="card-link">Open Dashboard →</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-preview">📅</div>
+                <div class="card-content">
+                    <div class="card-title">Historical Timeline</div>
+                    <div class="card-description">
+                        Track how each cognitive dial evolved from the 1950s to 2025. 
+                        Five distinct eras show the uneven progress of AI development.
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span>📊</span>
+                            <span>Timeline</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📱</span>
+                            <span>Responsive</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🎓</span>
+                            <span>Educational</span>
+                        </div>
+                    </div>
+                    <a href="ai-evolution-timeline.html" class="card-link">View Timeline →</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-preview">📊</div>
+                <div class="card-content">
+                    <div class="card-title">Systems Comparison</div>
+                    <div class="card-description">
+                        Compare different AI architectures side-by-side using radar charts. 
+                        See how early AI, modern LLMs, and agents differ across all five dials.
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span>📈</span>
+                            <span>Comparison</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🎨</span>
+                            <span>Visual</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>💼</span>
+                            <span>Enterprise</span>
+                        </div>
+                    </div>
+                    <a href="ai-systems-comparison.html" class="card-link">Compare Systems →</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-preview">🖼️</div>
+                <div class="card-content">
+                    <div class="card-title">Social Media Infographic</div>
+                    <div class="card-description">
+                        A shareable 1200×1200px infographic perfect for LinkedIn and Twitter. 
+                        Clean design with all five dials and current 2025 baseline levels.
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span>📱</span>
+                            <span>Social</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📸</span>
+                            <span>Screenshot-ready</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>🎨</span>
+                            <span>Polished</span>
+                        </div>
+                    </div>
+                    <a href="five-dials-infographic.html" class="card-link">View Infographic →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-tips">
+            <h2>💡 Usage Recommendations</h2>
+            <div class="tips-grid">
+                <div class="tip">
+                    <div class="tip-title">📝 For Substack</div>
+                    <div class="tip-content">
+                        Embed the Interactive Dashboard in your anchor essay. Link to Timeline 
+                        for readers wanting historical depth.
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">💼 For LinkedIn</div>
+                    <div class="tip-content">
+                        Screenshot the Infographic at 1200×1200px. Post as carousel with 
+                        each dial as a separate slide.
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">🎤 For Presentations</div>
+                    <div class="tip-content">
+                        Use Dashboard for live demos. Timeline for context. Comparison charts 
+                        for stakeholder discussions.
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-title">📧 For Newsletters</div>
+                    <div class="tip-content">
+                        Link to hosted interactive versions. Include static Infographic 
+                        screenshot as header image.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>All visualizations are self-contained, mobile-responsive, and ready to use.</p>
+            <p style="margin-top: 10px; opacity: 0.7;">See README.md for detailed usage instructions and customization guide.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Dials on the Machine Mind</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;600;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e12;
+            --bg-secondary: #131920;
+            --accent-1: #00d9ff;
+            --accent-2: #ff6b9d;
+            --accent-3: #ffd93d;
+            --accent-4: #6c5ce7;
+            --accent-5: #00b894;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a8;
+            --glow: rgba(0, 217, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0d1419 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .dashboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--accent-1), 
+                var(--accent-2), 
+                var(--accent-3),
+                transparent
+            );
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .dial-container {
+            display: grid;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .dial {
+            display: grid;
+            grid-template-columns: 200px 1fr 80px;
+            gap: 30px;
+            align-items: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeInRight 0.8s ease-out backwards;
+        }
+
+        .dial:nth-child(1) { animation-delay: 0.4s; }
+        .dial:nth-child(2) { animation-delay: 0.5s; }
+        .dial:nth-child(3) { animation-delay: 0.6s; }
+        .dial:nth-child(4) { animation-delay: 0.7s; }
+        .dial:nth-child(5) { animation-delay: 0.8s; }
+
+        .dial:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .dial-label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dial-name {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .dial-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .dial-slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .dial-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .dial-slider::-webkit-slider-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dial-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dial-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        #perception-slider::-webkit-slider-thumb {
+            background: var(--accent-1);
+            box-shadow: 0 0 20px var(--accent-1);
+        }
+
+        #perception-slider::-moz-range-thumb {
+            background: var(--accent-1);
+        }
+
+        #memory-slider::-webkit-slider-thumb {
+            background: var(--accent-2);
+            box-shadow: 0 0 20px var(--accent-2);
+        }
+
+        #memory-slider::-moz-range-thumb {
+            background: var(--accent-2);
+        }
+
+        #goals-slider::-webkit-slider-thumb {
+            background: var(--accent-3);
+            box-shadow: 0 0 20px var(--accent-3);
+        }
+
+        #goals-slider::-moz-range-thumb {
+            background: var(--accent-3);
+        }
+
+        #planning-slider::-webkit-slider-thumb {
+            background: var(--accent-4);
+            box-shadow: 0 0 20px var(--accent-4);
+        }
+
+        #planning-slider::-moz-range-thumb {
+            background: var(--accent-4);
+        }
+
+        #action-slider::-webkit-slider-thumb {
+            background: var(--accent-5);
+            box-shadow: 0 0 20px var(--accent-5);
+        }
+
+        #action-slider::-moz-range-thumb {
+            background: var(--accent-5);
+        }
+
+        .dial-value {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease-out 0.9s backwards;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            color: var(--text-primary);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .preset-btn:active {
+            transform: translateY(0);
+        }
+
+        .preset-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-family: 'Fraunces', serif;
+        }
+
+        .preset-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .analysis {
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(0, 217, 255, 0.05);
+            border-left: 4px solid var(--accent-1);
+            border-radius: 12px;
+            animation: fadeIn 1s ease-out 1s backwards;
+        }
+
+        .analysis h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--accent-1);
+        }
+
+        .analysis-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        @media (max-width: 968px) {
+            .dial {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .dashboard {
+                padding: 30px 20px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .presets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Five Dials on the Machine Mind</h1>
+            <p class="subtitle">Understand any AI system as a combination of five cognitive capabilities. Adjust the dials to explore different configurations.</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="dial-container">
+                <div class="dial">
+                    <div class="dial-label">
+                        <div class="dial-name" style="color: var(--accent-1)">Perception</div>
+                        <div class="dial-description">What it can take in from the world</div>
+                    </div>
+                    <div class="dial-slider-container">
+                        <input type="range" min="0" max="10" value="7" class="dial-slider" id="perception-slider">
+                    </div>
+                    <div class="dial-value" style="color: var(--accent-1)" id="perception-value">7</div>
+                </div>
+
+                <div class="dial">
+                    <div class="dial-label">
+                        <div class="dial-name" style="color: var(--accent-2)">Memory & Context</div>
+                        <div class="dial-description">What it carries across time and tasks</div>
+                    </div>
+                    <div class="dial-slider-container">
+                        <input type="range" min="0" max="10" value="6" class="dial-slider" id="memory-slider">
+                    </div>
+                    <div class="dial-value" style="color: var(--accent-2)" id="memory-value">6</div>
+                </div>
+
+                <div class="dial">
+                    <div class="dial-label">
+                        <div class="dial-name" style="color: var(--accent-3)">Goals & Values</div>
+                        <div class="dial-description">What "good" means for it</div>
+                    </div>
+                    <div class="dial-slider-container">
+                        <input type="range" min="0" max="10" value="3" class="dial-slider" id="goals-slider">
+                    </div>
+                    <div class="dial-value" style="color: var(--accent-3)" id="goals-value">3</div>
+                </div>
+
+                <div class="dial">
+                    <div class="dial-label">
+                        <div class="dial-name" style="color: var(--accent-4)">Planning & Foresight</div>
+                        <div class="dial-description">How it moves from here to there</div>
+                    </div>
+                    <div class="dial-slider-container">
+                        <input type="range" min="0" max="10" value="5" class="dial-slider" id="planning-slider">
+                    </div>
+                    <div class="dial-value" style="color: var(--accent-4)" id="planning-value">5</div>
+                </div>
+
+                <div class="dial">
+                    <div class="dial-label">
+                        <div class="dial-name" style="color: var(--accent-5)">Action & Impact</div>
+                        <div class="dial-description">What it's allowed to do</div>
+                    </div>
+                    <div class="dial-slider-container">
+                        <input type="range" min="0" max="10" value="4" class="dial-slider" id="action-slider">
+                    </div>
+                    <div class="dial-value" style="color: var(--accent-5)" id="action-value">4</div>
+                </div>
+            </div>
+
+            <div class="presets">
+                <button class="preset-btn" data-preset="early-ai">
+                    <div class="preset-name">Early AI (1950s-1980s)</div>
+                    <div class="preset-description">High planning, low perception. Logic puzzles in toy worlds.</div>
+                </button>
+                <button class="preset-btn" data-preset="modern-llm">
+                    <div class="preset-name">Modern LLM (2020s)</div>
+                    <div class="preset-description">Strong perception, expanding context, emerging planning.</div>
+                </button>
+                <button class="preset-btn" data-preset="autonomous-agent">
+                    <div class="preset-name">Autonomous Agent</div>
+                    <div class="preset-description">Multi-step planning with real-world action capabilities.</div>
+                </button>
+                <button class="preset-btn" data-preset="recommendation">
+                    <div class="preset-name">Recommendation System</div>
+                    <div class="preset-description">High perception, narrow goals, direct action on users.</div>
+                </button>
+                <button class="preset-btn" data-preset="future-institution">
+                    <div class="preset-name">Future Institution (2040s)</div>
+                    <div class="preset-description">Full institutional memory, deep planning, governed action.</div>
+                </button>
+                <button class="preset-btn" data-preset="reset">
+                    <div class="preset-name">Reset to Current</div>
+                    <div class="preset-description">Return to 2025 baseline configuration.</div>
+                </button>
+            </div>
+
+            <div class="analysis">
+                <h3>Current Configuration Analysis</h3>
+                <div class="analysis-content" id="analysis-text">
+                    This represents a typical modern AI system circa 2025: strong multimodal perception, 
+                    extended context windows, emerging planning capabilities, thin external goals, 
+                    and creeping but mediated action. This mismatch is what makes the current moment feel unstable.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const presets = {
+            'early-ai': { perception: 2, memory: 1, goals: 3, planning: 7, action: 1 },
+            'modern-llm': { perception: 8, memory: 7, goals: 3, planning: 5, action: 4 },
+            'autonomous-agent': { perception: 7, memory: 6, goals: 5, planning: 8, action: 7 },
+            'recommendation': { perception: 8, memory: 4, goals: 6, planning: 3, action: 8 },
+            'future-institution': { perception: 9, memory: 9, goals: 7, planning: 8, action: 6 },
+            'reset': { perception: 7, memory: 6, goals: 3, planning: 5, action: 4 }
+        };
+
+        const analyses = {
+            'early-ai': 'Early AI systems excelled at logical reasoning and planning in constrained domains, but were blind to the messy real world. They could prove theorems and solve puzzles, but couldn\'t see, hear, or operate at scale.',
+            'modern-llm': 'Modern large language models represent a partial mind: excellent at perceiving and generating language across domains, with growing context windows, but thin goals and mediated action. This configuration crosses psychological thresholds while remaining fundamentally tool-like.',
+            'autonomous-agent': 'Autonomous agents combine strong perception with multi-step planning and real-world action capabilities. The key question becomes: whose goals are they optimizing, and under what oversight?',
+            'recommendation': 'Recommendation systems see everything about user behavior, optimize for engagement metrics, and directly shape what billions of people experience daily. High action with narrow goals is a potent combination.',
+            'future-institution': 'A speculative future where institutions have AI "brains" with complete operational memory, sophisticated planning across policy domains, and bounded but significant action authority. The governance of goals becomes paramount.',
+            'reset': 'The 2025 baseline: a snapshot of partial minds that feel increasingly intelligent but remain fundamentally shaped by external goals and human-mediated action.'
+        };
+
+        // Update slider values
+        document.querySelectorAll('.dial-slider').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id.replace('-slider', '-value'));
+            
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+                updateAnalysis();
+            });
+        });
+
+        // Preset buttons
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const preset = this.dataset.preset;
+                const config = presets[preset];
+                
+                // Animate to new values
+                Object.keys(config).forEach(dial => {
+                    const slider = document.getElementById(`${dial}-slider`);
+                    const valueDisplay = document.getElementById(`${dial}-value`);
+                    
+                    slider.value = config[dial];
+                    valueDisplay.textContent = config[dial];
+                });
+
+                // Update analysis
+                const analysisText = document.getElementById('analysis-text');
+                analysisText.style.opacity = '0';
+                
+                setTimeout(() => {
+                    analysisText.textContent = analyses[preset];
+                    analysisText.style.opacity = '1';
+                }, 300);
+            });
+        });
+
+        function updateAnalysis() {
+            const values = {
+                perception: parseInt(document.getElementById('perception-slider').value),
+                memory: parseInt(document.getElementById('memory-slider').value),
+                goals: parseInt(document.getElementById('goals-slider').value),
+                planning: parseInt(document.getElementById('planning-slider').value),
+                action: parseInt(document.getElementById('action-slider').value)
+            };
+
+            let analysis = '';
+
+            // Pattern matching for interesting configurations
+            if (values.action > 7 && values.goals < 4) {
+                analysis = 'High action with thin goals is a dangerous configuration. The system can do a lot, but what is it optimizing for? Who decides?';
+            } else if (values.planning > 7 && values.perception < 3) {
+                analysis = 'High planning with low perception resembles early AI: excellent at reasoning in abstract domains, but blind to the real world\'s complexity and mess.';
+            } else if (values.memory > 8 && values.goals < 5) {
+                analysis = 'Perfect institutional memory without clear values creates systems that remember everything but lack wisdom about what matters. Permanent records with no natural forgetting.';
+            } else if (values.perception > 7 && values.memory > 7 && values.planning > 6) {
+                analysis = 'This configuration approaches what we might call a "cognitive system" - able to perceive broadly, remember extensively, and plan across time. The question is: to what ends?';
+            } else if (values.action > 6 && values.planning > 6) {
+                analysis = 'Systems that can both plan and act autonomously are the frontier of AI deployment. The governance question becomes urgent: who oversees these capabilities?';
+            } else {
+                analysis = 'A balanced configuration. Each dial represents a dimension of machine cognition that can be tuned independently, creating different system architectures.';
+            }
+
+            const analysisText = document.getElementById('analysis-text');
+            if (analysisText.textContent !== analysis) {
+                analysisText.style.transition = 'opacity 0.3s';
+                analysisText.style.opacity = '0';
+                
+                setTimeout(() => {
+                    analysisText.textContent = analysis;
+                    analysisText.style.opacity = '1';
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>

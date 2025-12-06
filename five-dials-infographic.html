@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Dials Framework - Infographic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --dial-1: #0ea5e9;
+            --dial-2: #8b5cf6;
+            --dial-3: #f59e0b;
+            --dial-4: #10b981;
+            --dial-5: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            padding: 0;
+            margin: 0;
+        }
+
+        .infographic {
+            width: 1200px;
+            height: 1200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content {
+            padding: 80px 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-family: 'Syne', sans-serif;
+            font-size: 72px;
+            font-weight: 800;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dials-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .dial-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 32px 40px;
+            display: grid;
+            grid-template-columns: 50px 280px 1fr 120px;
+            gap: 30px;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .dial-card:hover {
+            transform: translateX(10px);
+        }
+
+        .dial-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            text-align: center;
+            opacity: 0.3;
+        }
+
+        .dial-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dial-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .dial-desc {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .dial-visual {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .visual-bar {
+            flex: 1;
+            height: 12px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .visual-fill {
+            height: 100%;
+            border-radius: 6px;
+            position: relative;
+            transition: width 2s ease-out;
+        }
+
+        .visual-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .dial-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
+
+        .footer-text {
+            color: white;
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .footer-cta {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20% 50%, white 1px, transparent 1px),
+                radial-gradient(circle at 60% 20%, white 1px, transparent 1px),
+                radial-gradient(circle at 80% 80%, white 1px, transparent 1px);
+            background-size: 50px 50px, 80px 80px, 60px 60px;
+            pointer-events: none;
+        }
+
+        .dial-1 { color: var(--dial-1); }
+        .dial-2 { color: var(--dial-2); }
+        .dial-3 { color: var(--dial-3); }
+        .dial-4 { color: var(--dial-4); }
+        .dial-5 { color: var(--dial-5); }
+
+        .fill-1 { background: var(--dial-1); }
+        .fill-2 { background: var(--dial-2); }
+        .fill-3 { background: var(--dial-3); }
+        .fill-4 { background: var(--dial-4); }
+        .fill-5 { background: var(--dial-5); }
+
+        @media (max-width: 1200px) {
+            .infographic {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .content {
+                padding: 40px 30px;
+            }
+
+            .title {
+                font-size: 48px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .dial-card {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .dial-number {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="infographic">
+        <div class="bg-pattern"></div>
+        <div class="content">
+            <div class="header">
+                <div class="title">Five Dials on the<br>Machine Mind</div>
+                <div class="subtitle">Understanding AI systems through five cognitive capabilities</div>
+            </div>
+
+            <div class="dials-container">
+                <div class="dial-card">
+                    <div class="dial-number dial-1">01</div>
+                    <div class="dial-info">
+                        <div class="dial-name dial-1">Perception</div>
+                        <div class="dial-desc">What it can take in from the world</div>
+                    </div>
+                    <div class="dial-visual">
+                        <div class="visual-bar">
+                            <div class="visual-fill fill-1" style="width: 0;" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="dial-icon dial-1">👁️</div>
+                </div>
+
+                <div class="dial-card">
+                    <div class="dial-number dial-2">02</div>
+                    <div class="dial-info">
+                        <div class="dial-name dial-2">Memory & Context</div>
+                        <div class="dial-desc">What it carries across time and tasks</div>
+                    </div>
+                    <div class="dial-visual">
+                        <div class="visual-bar">
+                            <div class="visual-fill fill-2" style="width: 0;" data-width="70%"></div>
+                        </div>
+                    </div>
+                    <div class="dial-icon dial-2">🧠</div>
+                </div>
+
+                <div class="dial-card">
+                    <div class="dial-number dial-3">03</div>
+                    <div class="dial-info">
+                        <div class="dial-name dial-3">Goals & Values</div>
+                        <div class="dial-desc">What "good" means for it</div>
+                    </div>
+                    <div class="dial-visual">
+                        <div class="visual-bar">
+                            <div class="visual-fill fill-3" style="width: 0;" data-width="35%"></div>
+                        </div>
+                    </div>
+                    <div class="dial-icon dial-3">🎯</div>
+                </div>
+
+                <div class="dial-card">
+                    <div class="dial-number dial-4">04</div>
+                    <div class="dial-info">
+                        <div class="dial-name dial-4">Planning & Foresight</div>
+                        <div class="dial-desc">How it moves from here to there</div>
+                    </div>
+                    <div class="dial-visual">
+                        <div class="visual-bar">
+                            <div class="visual-fill fill-4" style="width: 0;" data-width="60%"></div>
+                        </div>
+                    </div>
+                    <div class="dial-icon dial-4">🗺️</div>
+                </div>
+
+                <div class="dial-card">
+                    <div class="dial-number dial-5">05</div>
+                    <div class="dial-info">
+                        <div class="dial-name dial-5">Action & Impact</div>
+                        <div class="dial-desc">What it's actually allowed to do</div>
+                    </div>
+                    <div class="dial-visual">
+                        <div class="visual-bar">
+                            <div class="visual-fill fill-5" style="width: 0;" data-width="50%"></div>
+                        </div>
+                    </div>
+                    <div class="dial-icon dial-5">⚡</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-text">
+                    Understanding AI through cognitive modules, not hype cycles
+                </div>
+                <div class="footer-cta">
+                    Which dial matters most to your organization?
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate bars on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.visual-fill').forEach((fill, index) => {
+                    setTimeout(() => {
+                        fill.style.width = fill.dataset.width;
+                    }, index * 200);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
